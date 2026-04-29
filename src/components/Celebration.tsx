@@ -42,7 +42,7 @@ export const Celebration = () => {
           Riffat Fauzan Rahim Bhimdiwala 💖
         </h2>
         <p className="text-foreground/90 text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed">
-          Wishing the most gorgeous, goated soul a day as radiant as you are. ✨
+          Happiest birthday bubs I hope you havin a goated day, Missing you alot. 🤟
         </p>
         {!audioStarted && (
           <button
