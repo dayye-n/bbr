@@ -1,20 +1,26 @@
 import { useRef, useState } from "react";
 import { Confetti } from "./Confetti";
-import birthdaySong from "@/assets/birthday-song.mp3";
+
+const birthdaySong = new URL("../assets/birthday-song.m4a", import.meta.url).href;
 
 export const Celebration = () => {
   const [audioStarted, setAudioStarted] = useState(false);
+  const [audioBlocked, setAudioBlocked] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const handlePlay = async () => {
     const audio = audioRef.current;
     if (!audio) return;
     try {
+      audio.muted = false;
       audio.volume = 1;
-      await audio.play();
+      const playAttempt = audio.play();
+      setAudioBlocked(false);
+      await playAttempt;
       setAudioStarted(true);
     } catch (err) {
       console.error("Audio play failed:", err);
+      setAudioBlocked(true);
     }
   };
 
@@ -22,7 +28,7 @@ export const Celebration = () => {
     <div className="relative flex min-h-screen flex-col items-center justify-center px-6 text-center overflow-hidden">
       <Confetti />
 
-      <audio ref={audioRef} src={birthdaySong} loop playsInline preload="auto" />
+      <audio ref={audioRef} src={birthdaySong} loop playsInline preload="metadata" />
 
       <div className="relative z-10 animate-bounce-in">
         <div className="text-7xl md:text-9xl mb-6">🎂🎉🎈</div>
@@ -37,11 +43,14 @@ export const Celebration = () => {
         </p>
         {!audioStarted && (
           <button
-            onClick={handlePlay}
+            onPointerDown={handlePlay}
             className="mt-8 px-8 py-4 rounded-full bg-gradient-party text-white text-lg font-semibold shadow-glow hover:scale-105 transition-transform animate-glow-pulse"
           >
             🎵 Tap to play your song
           </button>
+        )}
+        {audioBlocked && (
+          <audio className="mx-auto mt-6 w-full max-w-sm" src={birthdaySong} controls playsInline preload="metadata" />
         )}
         {audioStarted && (
           <p className="text-muted-foreground mt-6 text-sm italic">
