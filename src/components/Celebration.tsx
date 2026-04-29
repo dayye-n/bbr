@@ -1,24 +1,28 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Confetti } from "./Confetti";
-
-const YOUTUBE_ID = "vYMxOzxKYYo";
+import birthdaySong from "@/assets/birthday-song.mp3";
 
 export const Celebration = () => {
   const [audioStarted, setAudioStarted] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const handlePlay = async () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    try {
+      audio.volume = 1;
+      await audio.play();
+      setAudioStarted(true);
+    } catch (err) {
+      console.error("Audio play failed:", err);
+    }
+  };
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center px-6 text-center overflow-hidden">
       <Confetti />
 
-      {/* YouTube audio player — only mounted after user tap (required for mobile autoplay policies) */}
-      {audioStarted && (
-        <iframe
-          title="birthday-song"
-          src={`https://www.youtube.com/embed/${YOUTUBE_ID}?autoplay=1&controls=0&loop=1&playlist=${YOUTUBE_ID}&playsinline=1`}
-          allow="autoplay; encrypted-media"
-          className="absolute opacity-0 pointer-events-none w-1 h-1"
-        />
-      )}
+      <audio ref={audioRef} src={birthdaySong} loop playsInline preload="auto" />
 
       <div className="relative z-10 animate-bounce-in">
         <div className="text-7xl md:text-9xl mb-6">🎂🎉🎈</div>
@@ -33,7 +37,7 @@ export const Celebration = () => {
         </p>
         {!audioStarted && (
           <button
-            onClick={() => setAudioStarted(true)}
+            onClick={handlePlay}
             className="mt-8 px-8 py-4 rounded-full bg-gradient-party text-white text-lg font-semibold shadow-glow hover:scale-105 transition-transform animate-glow-pulse"
           >
             🎵 Tap to play your song
