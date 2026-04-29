@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Confetti } from "./Confetti";
 
-const birthdaySong = new URL("../assets/birthday-song.m4a", import.meta.url).href;
+const birthdaySong = "/audio/birthday-song.mp3";
 
 export const Celebration = () => {
   const [audioStarted, setAudioStarted] = useState(false);
@@ -28,7 +28,10 @@ export const Celebration = () => {
     <div className="relative flex min-h-screen flex-col items-center justify-center px-6 text-center overflow-hidden">
       <Confetti />
 
-      <audio ref={audioRef} src={birthdaySong} loop playsInline preload="metadata" />
+      <audio ref={audioRef} loop playsInline preload="metadata">
+        <source src="/audio/birthday-song.mp3" type="audio/mpeg" />
+        <source src="/audio/birthday-song.m4a" type="audio/mp4" />
+      </audio>
 
       <div className="relative z-10 animate-bounce-in">
         <div className="text-7xl md:text-9xl mb-6">🎂🎉🎈</div>
@@ -43,7 +46,7 @@ export const Celebration = () => {
         </p>
         {!audioStarted && (
           <button
-            onPointerDown={handlePlay}
+            onClick={handlePlay}
             className="mt-8 px-8 py-4 rounded-full bg-gradient-party text-white text-lg font-semibold shadow-glow hover:scale-105 transition-transform animate-glow-pulse"
           >
             🎵 Tap to play your song
