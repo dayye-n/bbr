@@ -30,6 +30,12 @@ export const Celebration = () => {
           🎵 (turn your sound on)
         </p>
       </div>
+
+      <img
+        src="https://media1.tenor.com/m/ZKXLpJpxvOYAAAAC/bee-eye-brows.gif"
+        alt="Cute bee wiggling its eyebrows"
+        className="relative z-10 mt-10 w-56 md:w-72 rounded-2xl shadow-glow"
+      />
     </div>
   );
 };
